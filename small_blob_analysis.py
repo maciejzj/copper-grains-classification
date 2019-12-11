@@ -1,0 +1,58 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+
+from img_processing import *
+from blob_series import *
+
+setup_matplotlib_params()
+
+def plot_blob_stat(samples_set, lebels_set, colors):
+    plt.figure()
+    for sample_series, sample_label_index in zip(samples_set, lebels_set):
+        plt.plot([0, 1, 2, 3, 4], sample_series,
+                 c=colors[sample_label_index], linewidth=1.2)
+
+def patch_plot_legend(colors, labels):
+    legend = [mpatches.Patch(color=color, label=label) 
+              for color, label in zip(colors, labels)]
+    plt.legend(handles=legend)
+
+X, y = default_img_set()
+X = [[full_prepare(img) for img in same_sample] for same_sample in X]
+
+# Option two: all
+Xa = [[len(stage) for stage in find_blob_series(img_series, 
+                                                only_remaining = False)]
+       for img_series in X]
+# Option one: remaining
+Xr = [[len(stage) for stage in find_blob_series(img_series)]
+    for img_series in X]
+# Option three: percentage
+Xp = [percent_of_remaining_blobs_in_stages(find_blob_series(img_series))
+      for img_series in X]
+
+colors = ['r', 'g', 'b', 'y']
+labels = ['E5R', 'E11R', 'E6R', 'E1XP']
+
+plot_blob_stat(Xa, y, colors)
+plt.title('Number of all blobs')
+plt.xlabel('minutes')
+plt.ylabel('number of all detected blobs')
+patch_plot_legend(colors, labels)
+
+plot_blob_stat(Xr, y, colors)
+plt.title('Number of remaining blobs')
+plt.xlabel('minutes')
+plt.ylabel('remaining blobs')
+patch_plot_legend(colors, labels)
+
+plot_blob_stat(Xp, y, colors)
+plt.title('Percent of remaining blobs')
+plt.xlabel('minutes')
+plt.ylabel('percent of remaining blobs')
+patch_plot_legend(colors, labels)
+
+plt.show()
+
+
