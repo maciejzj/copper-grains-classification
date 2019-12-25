@@ -54,5 +54,3 @@ plt.ylabel('percent of remaining blobs')
 patch_plot_legend(colors, labels)
 
 plt.show()
-
-

@@ -9,7 +9,8 @@ from skimage.io import imread
 
 from img_processing import *
 
-setup_matplotlib_params()
+#setup_matplotlib_params()
+#plt.style.use("ggplot")
 
 # Load and prepare img
 img = imread('img/104_E5R_0.jpg')
@@ -44,4 +45,7 @@ for idx, (blobs, color, title) in enumerate(zip(blobs_list, colors, titles)):
 
 plt.tight_layout()
 
-plt.show()
+#plt.show()
+
+import tikzplotlib
+tikzplotlib.save("test.tex")

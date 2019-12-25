@@ -4,7 +4,9 @@
 * [ ] Check histogram eq adapt and local histogram eq with current blobl network
 * [ ] Canny segmentation
 * [ ] Whole img neural network
-* [ ] Uporządkować eksport matplotlib latex
+* [ ] Detal porównanie ziaren
+* [ ] tabela kontyngencji
+* [ ] Uporządkować eksport matplotlib latex/pgf export
 
 ## Linki
 [Macierz GLCM](https://uk.mathworks.com/help/images/texture-analysis-using-the-gray-level-co-occurrence-matrix-glcm.html)

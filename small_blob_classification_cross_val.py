@@ -9,11 +9,16 @@ def cross_val_demo(X, y):
     y = np.array(y)
 
     model = default_grain_classifier_model()
+    model.compile(optimizer='adam',
+                  loss='sparse_categorical_crossentropy',
+                  metrics=['accuracy'])
+    
     eval = network_cross_validation(model, X, y)
 
     print('Folds scores: (loss, acc)\n', eval)
     eval = np.array(eval)
-    print('Cross validation mean score (loss, acc):\n', eval.mean(axis=0), '\n')
+    print('Cross validation mean score (loss, acc):\n',
+          eval.mean(axis=0), '\n')
 
 X, y = default_img_set()
 X = [[full_prepare(img) for img in same_sample] for same_sample in X]

@@ -17,7 +17,8 @@ def classification_demo(X, y):
     y = np.array(y)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, 
-                                                        test_size=0.33)
+                                                        test_size=0.33,
+                                                        random_state=1)
 
     model = default_grain_classifier_model()
 
@@ -25,20 +26,33 @@ def classification_demo(X, y):
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
     
-    history = model.fit(X_train, y_train, epochs=100, verbose=0)
+    history = model.fit(X_train, y_train, epochs=300, verbose=0)
 
     print("Test y:", y_test)
+    print("Test y:", [decode_labels(y) for y in y_test])
     print('Test prediction scores:\n', model.predict(X_test))
-    print('Test prediction classification:\n', model.predict(X_test).round())
+    prediction = model.predict_classes(X_test)
+    print('Test prediction classification:\n', prediction)
+    print('Test prediction classification:\n',
+          [decode_labels(y) for y in prediction])
     print('Model evaluation loss and accuracy:\n', 
           model.evaluate(X_test, y_test, verbose=0),
           '\n')
 
-    plt.figure()
-    plt.plot(history.history['accuracy'])
+    fig = plt.figure()
+    ax = plt.subplot(111)
+    plt.plot(history.history['accuracy'], c='b', label='mar')
     plt.title('Model training history')
     plt.ylabel('Accuracy')
     plt.xlabel('Epoch')
+    
+    plt.twinx()
+    plt.plot(history.history['loss'], c='r', label='cepan')
+    plt.title('Model training history')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    
+    ax.legend(loc=0)
 
 X, y = default_img_set()
 X = [[full_prepare(img) for img in same_sample] for same_sample in X]
