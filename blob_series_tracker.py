@@ -7,7 +7,7 @@ from skimage.color import rgb2gray
 from skimage.feature import blob_dog
 
 from img_processing import *
-from find_blobs import *
+from blob_finder import *
 
 setup_matplotlib_params()
 
