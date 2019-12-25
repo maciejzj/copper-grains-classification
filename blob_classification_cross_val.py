@@ -23,23 +23,7 @@ def cross_val_demo(X, y):
 X, y = default_img_set()
 X = [[full_prepare(img) for img in same_sample] for same_sample in X]
 
-Xs = []
-# Option one: all
-Xs.append([
-    [len(stage) for stage in find_blob_series(img_series, 
-                                              only_remaining = False)]
-    for img_series in X
-])
-# Option two: remaining
-Xs.append([
-    [len(stage) for stage in find_blob_series(img_series)]
-    for img_series in X
-])
-# Option three: percentage of remaining
-Xs.append([
-    percent_of_remaining_blobs_in_stages(find_blob_series(img_series)) 
-    for img_series in X
-])
+Xs = count_blobs_with_all_methods(X)
 
 demo_names = ['All blobs detection',
               'Detect only remaining blobs',

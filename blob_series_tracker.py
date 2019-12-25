@@ -9,9 +9,7 @@ from skimage.feature import blob_dog
 from img_processing import *
 from blob_finder import *
 
-setup_matplotlib_params()
-
-def patch_plot_legend(colors, labels):
+def patch_plot_legend_outside(colors, labels):
     legend = [mpatches.Patch(color=color, label=label) 
               for color, label in zip(colors, labels)]
     plt.legend(handles=legend, loc='upper left', bbox_to_anchor=(1, 1))
@@ -64,9 +62,23 @@ def percent_of_remaining_blobs_in_stages(stages):
     num_of_blobs = [len(stage) for stage in stages]
     return [remaining / num_of_blobs[0] for remaining in num_of_blobs]
     
+def count_blobs_with_all_methods(X):
+    # Option two: all
+    Xa = [[len(stage) for stage in find_blob_series(img_series, 
+                                                    only_remaining = False)]
+           for img_series in X]    
+    # Option one: remaining
+    Xr = [[len(stage) for stage in find_blob_series(img_series)]
+                 for img_series in X]
+    # Option three: percentage
+    Xp = [percent_of_remaining_blobs_in_stages(find_blob_series(img_series))
+                for img_series in X]
+                
+    return Xa, Xr, Xp
+
 if __name__ == "__main__":
     # Load images
-    imgs = load_img_series('img/111_E1XP')
+    imgs = load_img_series('img/104_E5R')
     # Prepare images for processing
     imgs_prep = [full_prepare(img) for img in imgs]
     # Prepare cropped images for displaying
@@ -128,15 +140,17 @@ if __name__ == "__main__":
     ax = ax.flatten()
 
     # Show stages on subplots
-    loop_set = enumerate(zip(stages_rem, stages_all, colors, imgs_crop))
-    for idx, (stage_rem, stage_all, color, img) in loop_set:
+    loop_set = enumerate(zip(stages_rem, stages_all, imgs_crop))
+    for idx, (stage_rem, stage_all, img) in loop_set:
         ax[idx].imshow(img, cmap=plt.get_cmap('gray'))
         ax[idx].set_title(
-        "Minute: {}, all blobs: {}, rem blobs: {}".format(idx, len(stage_all), len(stage_rem)))
-        for blob_all, blob_rem in zip(stage_all, stage_rem):
+        "Minute: {}, all blobs: {}, rem blobs: {}".
+            format(idx, len(stage_all), len(stage_rem)))
+        for blob_all in stage_all:
             y, x, r = blob_all
             c = plt.Circle((x, y), r, color='b', linewidth=0.75, fill=False)
             ax[idx].add_patch(c)
+        for blob_rem in stage_rem:
             y, x, r = blob_rem
             c = plt.Circle((x, y), r, color='r', linewidth=0.75, fill=False)
             ax[idx].add_patch(c)
