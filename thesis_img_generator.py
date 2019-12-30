@@ -98,7 +98,7 @@ def blob_analysis_gen():
     Xa, Xr, Xp = count_blobs_with_all_methods(X)
 
     colors = ['r', 'g', 'b', 'y']
-    labels = ['E5R', 'E11R', 'E6R', 'E1XP']
+    labels = ['E5R', 'E11R', 'E6R', 'E16R']
 
     plot_blob_stat(Xa, y, colors)
     plt.title('Liczba wszystkich detali')

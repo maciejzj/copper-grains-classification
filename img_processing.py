@@ -65,7 +65,7 @@ def default_img_set():
     samples_names = ['104_E5R', '113_E5R', '119_E5R',
                      '105_E11R','106_E11R', '115_E11R',
                      '107_E6R', '108_E6R', '117_E6R',
-                     '111_E1XP', '112_E1XP', '118_E1XP']
+                     '111_E16R', '112_E16R', '118_E16R']
     
     X = [load_img_series('img/' + name) for name in samples_names]
     y = [0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3]
@@ -73,12 +73,12 @@ def default_img_set():
     
 def decode_labels(y):
     '''Turn numeric labels into grain samples names.'''
-    y_labels = np.array(['E5R', 'E6R', 'E11R', 'E1XP'])
+    y_labels = np.array(['E5R', 'E6R', 'E11R', 'E16R'])
     return y_labels[y]
     
 def encode_labels(y_labels):
     '''Turn grain samples names into numeric labels.'''
-    y = {'E5R':0, 'E6R':1, 'E11R':2, 'E1XP':3}
+    y = {'E5R':0, 'E6R':1, 'E11R':2, 'E16R':3}
     return [y[label] for label in y_labels]
     
 def setup_matplotlib_params():
