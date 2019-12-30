@@ -12,7 +12,7 @@ from blob_finder import *
 def patch_plot_legend_outside(colors, labels):
     legend = [mpatches.Patch(color=color, label=label) 
               for color, label in zip(colors, labels)]
-    plt.legend(handles=legend, loc='upper left', bbox_to_anchor=(1, 1))
+    plt.legend(handles=legend, loc='upper right', bbox_to_anchor=(1, 1))
 
 def inside_circle(x, y, a, b, r):
     '''
@@ -88,7 +88,7 @@ if __name__ == "__main__":
     stages_rem = find_blob_series(imgs_prep)
     
     # Map stages on first image
-    colors = ['blue', 'blueviolet', 'magenta', 'crimson']
+    colors = ['blue', 'blueviolet', 'magenta', 'crimson', 'red']
     fig, ax = plt.subplots(1)
     plt.title("Blobs detection with DoH")
     plt.imshow(imgs_crop[0], cmap=plt.get_cmap('gray'))
@@ -98,11 +98,11 @@ if __name__ == "__main__":
             c = plt.Circle((x, y), r, color=color, linewidth=0.75, fill=False)
             ax.add_patch(c)
     labels = ['Minute 0', 'Minute 1', 'Minute 2', 'Minute 3', 'Minute 4']
-    patch_plot_legend(colors, labels)
+    patch_plot_legend_outside(colors, labels)
     print(percent_of_remaining_blobs_in_stages(stages_rem))
 
     # Show stages on subplots
-    fig, ax = plt.subplots(2, 2, figsize=(10, 7))
+    fig, ax = plt.subplots(2, 3, figsize=(12, 7))
     ax = ax.flatten()
 
     loop_set = enumerate(zip(stages_rem, colors, imgs_crop))
@@ -119,7 +119,6 @@ if __name__ == "__main__":
     stages_all = find_blob_series(imgs_prep, only_remaining=False)
 
     # Show stages on subplots
-    colors = ['red', 'peru', 'olive', 'seagreen', 'lightseagreen']
     fig, ax = plt.subplots(2, 3, figsize=(12, 7))
     ax = ax.flatten()
 
@@ -158,3 +157,4 @@ if __name__ == "__main__":
     plt.tight_layout()
     
     plt.show()
+

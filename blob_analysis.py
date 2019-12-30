@@ -25,7 +25,7 @@ if __name__ == '__main__':
   Xa, Xr, Xp = count_blobs_with_all_methods(X)
   
   colors = ['r', 'g', 'b', 'y']
-  labels = ['E5R', 'E11R', 'E6R', 'E1XP']
+  labels = ['E5R', 'E6R', 'E11R', 'E1XP']
 
   plot_blob_stat(Xa, y, colors)
   plt.title('Number of all blobs')
@@ -46,3 +46,4 @@ if __name__ == '__main__':
   patch_plot_legend(colors, labels)
 
   plt.show()
+

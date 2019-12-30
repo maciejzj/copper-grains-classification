@@ -31,3 +31,4 @@ demo_names = ['All blobs detection',
 for X, demo_name in zip(Xs, demo_names):
     print(demo_name)
     cross_val_demo(X, y)
+

@@ -18,11 +18,9 @@ def classification_demo(X, y):
                                                         random_state=1)
 
     model = default_grain_classifier_model()
-
     model.compile(optimizer='adam',
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
-    
     history = model.fit(X_train, y_train, epochs=300, verbose=0)
 
     print("Test y:", y_test)
@@ -37,19 +35,19 @@ def classification_demo(X, y):
           '\n')
 
     fig = plt.figure()
-    ax = plt.subplot(111)
-    plt.plot(history.history['accuracy'], c='b', label='mar')
+    ax = plt.subplot()
     plt.title('Model training history')
+    plt.xlabel('Epoch')
+    
+    lns1 = plt.plot(history.history['accuracy'], c='b', label='Accuracy')
     plt.ylabel('Accuracy')
-    plt.xlabel('Epoch')
-    
     plt.twinx()
-    plt.plot(history.history['loss'], c='r', label='cepan')
-    plt.title('Model training history')
+    lns2 = plt.plot(history.history['loss'], c='r', label='Loss')
     plt.ylabel('Loss')
-    plt.xlabel('Epoch')
     
-    ax.legend(loc=0)
+    lns = lns1 + lns2
+    labs = [l.get_label() for l in lns]
+    ax.legend(lns, labs, loc='lower right', bbox_to_anchor=(1, 0.5))
 
 if __name__ == '__main__':
     X, y = default_img_set()

@@ -25,16 +25,6 @@ def crop_ui(img):
     img_cropped  = crop(img, ((27, 19), (25, 37)))
     return img_cropped
     
-def enhance_sharpness(img):
-    '''Enhnace sharpness of FLIR recorded grain image.'''
-    return unsharp_mask(img_inv, radius=1, amount=1.5)
-        
-def enhance_denoising():
-    pass
-
-def enhance_contrast():
-    pass
-    
 def get_temperature_bounds(img, bounds=(((6, 24), (283, 318)),
                                        ((219, 236), (283, 318)))):
     '''Extract temperature values from FLIR UI on image.'''
@@ -83,26 +73,28 @@ def default_img_set():
     
 def decode_labels(y):
     '''Turn numeric labels into grain samples names.'''
-    y_labels = np.array(['E5R', 'E11R', 'E6R', 'E1XP'])
+    y_labels = np.array(['E5R', 'E6R', 'E11R', 'E1XP'])
     return y_labels[y]
     
 def encode_labels(y_labels):
     '''Turn grain samples names into numeric labels.'''
-    y = {'E5R':0, 'E11R':1, 'E6R':2, 'E1XP':3}
+    y = {'E5R':0, 'E6R':1, 'E11R':2, 'E1XP':3}
     return [y[label] for label in y_labels]
     
 def setup_matplotlib_params():
     '''Setup matplotlib to use Latex rendering style.'''
-    pgf_with_custom_preamble = {
-         "font.family": "serif",
-         "text.usetex": True,
-         "legend.frameon": False,
-         "pgf.rcfonts": False,
-         "pgf.preamble": [
-            r"\usepackage{units}",
-            r"\usepackage{metalogo}",
-            r"\usepackage{unicode-math}",
-            r"\setmathfont{xits-math.otf}",
-            ]
-    }
-    mpl.rcParams.update(pgf_with_custom_preamble)
+    pass
+#    pgf_with_custom_preamble = {
+#         "font.family": "serif",
+#         "text.usetex": True,
+#         "legend.frameon": False,
+#         "pgf.rcfonts": False,
+#         "pgf.preamble": [
+#            r"\usepackage{units}",
+#            r"\usepackage{metalogo}",
+#            r"\usepackage{unicode-math}",
+#            r"\setmathfont{xits-math.otf}",
+#            ]
+#    }
+#    mpl.rcParams.update(pgf_with_custom_preamble)
+
