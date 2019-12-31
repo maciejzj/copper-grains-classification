@@ -179,10 +179,10 @@ def network_comparison_gen():
             model.compile(optimizer='adam',
                           loss='sparse_categorical_crossentropy',
                           metrics=['accuracy'])
-            eval = np.array(network_cross_validation(model, X, y))
-            eval = np.round(eval.mean(axis=0), 2)
+            score = np.array(network_cross_validation(model, X, y))
+            score = np.round(score.mean(axis=0), 2)
 
-            filewriter.writerow(('Funkcja aktywacji', func, *eval))
+            filewriter.writerow(('Funkcja aktywacji', func, *score))
         
         # Number of hidden layers
         models = []
@@ -202,10 +202,10 @@ def network_comparison_gen():
             model.compile(optimizer='adam',
                             loss='sparse_categorical_crossentropy',
                             metrics=['accuracy'])
-            eval = np.array(network_cross_validation(model, X, y))
-            eval = np.round(eval.mean(axis=0), 2)
+            score = np.array(network_cross_validation(model, X, y))
+            score = np.round(score.mean(axis=0), 2)
 
-            filewriter.writerow(('Liczba warstw ukrytych', i, *eval))
+            filewriter.writerow(('Liczba warstw ukrytych', i, *score))
             
         # Number of neurons in hidden layers
         neurons_num = ((128, 64), (256, 128), (512, 126))
@@ -221,11 +221,11 @@ def network_comparison_gen():
             model.compile(optimizer='adam',
                           loss='sparse_categorical_crossentropy',
                           metrics=['accuracy'])
-            eval = np.array(network_cross_validation(model, X, y))
-            eval = np.round(eval.mean(axis=0), 2)
+            score = np.array(network_cross_validation(model, X, y))
+            score = np.round(score.mean(axis=0), 2)
 
             filewriter.writerow(('Liczba neuronów w warstwach ukrytych',
-                                 '{} i {}'.format(num[0], num[1]), *eval))  
+                                 '{} i {}'.format(num[0], num[1]), *score))  
             
         # Optimizer
         model = default_grain_classifier_model()
@@ -234,10 +234,10 @@ def network_comparison_gen():
             model.compile(optimizer='adam',
                           loss='sparse_categorical_crossentropy',
                           metrics=['accuracy'])
-            eval = np.array(network_cross_validation(model, X, y))
-            eval = np.round(eval.mean(axis=0), 2)
+            score = np.array(network_cross_validation(model, X, y))
+            score = np.round(score.mean(axis=0), 2)
 
-            filewriter.writerow(('Algorytm uczenia', opt, *eval))
+            filewriter.writerow(('Algorytm uczenia', opt, *score))
             
 def confusion_matrix_gen():
     X, y = default_img_set()

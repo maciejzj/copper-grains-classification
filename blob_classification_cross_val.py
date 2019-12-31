@@ -13,12 +13,12 @@ def cross_val_demo(X, y):
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
     
-    eval = network_cross_validation(model, X, y)
+    score = network_cross_validation(model, X, y, 3)
 
-    print('Folds scores: (loss, acc)\n', eval)
-    eval = np.array(eval)
+    print('Folds scores: (loss, acc)\n', score)
+    score = np.array(score)
     print('Cross validation mean score (loss, acc):\n',
-          eval.mean(axis=0), '\n')
+          score.mean(axis=0), '\n')
 
 X, y = default_img_set()
 X = [[full_prepare(img) for img in same_sample] for same_sample in X]

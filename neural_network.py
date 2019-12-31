@@ -16,10 +16,12 @@ def default_grain_classifier_model():
     ])
     return model
 
-def network_cross_validation(model, X, y):
+def network_cross_validation(model, X, y, n_splits):
     '''Compute cross validation fold scores for given keras model.'''
     eval_scores = []
-    for train_index, test_index in StratifiedKFold(n_splits = 3).split(X, y):
+    
+    folds = StratifiedKFold(n_splits=n_splits).split(X, y)
+    for train_index, test_index in folds:
         x_train, x_test= X[train_index], X[test_index]
         y_train, y_test= y[train_index], y[test_index]
         
@@ -31,7 +33,8 @@ def mean_confusion_matrix(model, X, y, n_splits):
     '''Compute mean confusion matrix using cross validation with n splits.'''
     conf_matrix = np.zeros((4, 4))
 
-    for train_index, test_index in StratifiedKFold(n_splits = 3).split(X, y):
+    folds = StratifiedKFold(n_splits = n_splits).split(X, y)
+    for train_index, test_index in folds:
         x_train, x_test= X[train_index], X[test_index]
         y_train, y_test= y[train_index], y[test_index]
         
