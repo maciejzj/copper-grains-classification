@@ -119,14 +119,14 @@ def blob_analysis_gen():
     plt.xlabel('Minuty')
     plt.ylabel('Liczba detali')
     patch_plot_legend(colors, labels)
-    tikzplotlib.save('exports/blob_analysis_percent')
+    tikzplotlib.save('exports/blob_analysis_ratio')
 
 def neural_network_trainig_gen():
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]
     Xs = count_blobs_with_all_methods(X)
     
-    files_suffixes = ['all', 'remaining', 'percent']
+    files_suffixes = ['all', 'remaining', 'ratio']
     
     for X, suffix in zip(Xs, files_suffixes):
         X = np.array(X)
@@ -156,7 +156,7 @@ def neural_network_trainig_gen():
 def network_comparison_gen():
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]
-    X = [percent_of_remaining_blobs_in_stages(find_blob_series(img_series))
+    X = [ratio_of_remaining_blobs_in_stages(find_blob_series(img_series))
          for img_series in X]
     X = np.array(X)
     y = np.array(y)
@@ -252,7 +252,7 @@ def confusion_matrix_gen():
                   metrics=['accuracy'])
 
     mcm = mean_confusion_matrix(model, X, y, 3)
-    np.savetxt("exports/mean_confusion_matrix_percent.csv",
+    np.savetxt("exports/mean_confusion_matrix_ratio.csv",
                mcm, fmt='%.2f', delimiter=";")
 
 def clear_exports_dir():

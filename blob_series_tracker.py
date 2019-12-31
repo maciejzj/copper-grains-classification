@@ -54,10 +54,9 @@ def find_blob_series(imgs, only_remaining=True):
         stages.append(remaining)
     return stages
     
-def percent_of_remaining_blobs_in_stages(stages):
+def ratio_of_remaining_blobs_in_stages(stages):
     '''
-    In each stage calculate the percentage of blobs that are
-    present in the first stage and remain at given stage.
+    In each stage calculate ratio of remaining blobs to their initial number.
     '''
     num_of_blobs = [len(stage) for stage in stages]
     return [remaining / num_of_blobs[0] for remaining in num_of_blobs]
@@ -70,8 +69,8 @@ def count_blobs_with_all_methods(X):
     # Option one: remaining
     Xr = [[len(stage) for stage in find_blob_series(img_series)]
                  for img_series in X]
-    # Option three: percentage
-    Xp = [percent_of_remaining_blobs_in_stages(find_blob_series(img_series))
+    # Option three: remaining ratio
+    Xp = [ratio_of_remaining_blobs_in_stages(find_blob_series(img_series))
                 for img_series in X]
                 
     return Xa, Xr, Xp
@@ -99,7 +98,7 @@ if __name__ == "__main__":
             ax.add_patch(c)
     labels = ['Minute 0', 'Minute 1', 'Minute 2', 'Minute 3', 'Minute 4']
     patch_plot_legend_outside(colors, labels)
-    print(percent_of_remaining_blobs_in_stages(stages_rem))
+    print(ratio_of_remaining_blobs_in_stages(stages_rem))
 
     # Show stages on subplots
     fig, ax = plt.subplots(2, 3, figsize=(12, 7))

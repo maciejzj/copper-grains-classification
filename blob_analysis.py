@@ -40,9 +40,9 @@ if __name__ == '__main__':
   patch_plot_legend(colors, labels)
 
   plot_blob_stat(Xp, y, colors)
-  plt.title('Percent of remaining blobs')
+  plt.title('Ratio of remaining blobs')
   plt.xlabel('minutes')
-  plt.ylabel('percent of remaining blobs')
+  plt.ylabel('Ratio of remaining blobs')
   patch_plot_legend(colors, labels)
 
   plt.show()
