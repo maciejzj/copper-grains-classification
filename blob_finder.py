@@ -7,8 +7,6 @@ from skimage.color import rgb2gray
 from skimage.feature import blob_dog
 from img_processing import *
 
-setup_matplotlib_params()
-
 def find_blobs(img):
     '''
     Find blobs in given image and get list of their positions and radiuses.
@@ -24,22 +22,22 @@ if __name__ == "__main__":
     img = imread('img/104_E5R_0.jpg')
     img = rgb2gray(img)
     show_with_hist(img, 'Original image')
-
+    
     # Get temperature bounds
     print(get_temperature_bounds(img))
-
+    
     # Crop
     img_crop = crop_ui(img)
     show_with_hist(img_crop, 'Cropped image')
-
+    
     # Invert
     img_inv = invert(img_crop)
     show_with_hist(img_inv, 'Inverted')
-
+    
     img_prep = img_inv
-
+    
     blobs = find_blobs(img_prep)
-
+    
     fig, ax = plt.subplots(1)
     plt.title("Blobs detection with DoH")
     plt.imshow(img_crop, cmap=plt.get_cmap('gray'))
@@ -49,5 +47,5 @@ if __name__ == "__main__":
             ax.add_patch(c)
     ax.set_axis_off()
     print(len(blobs))
-
+    
     plt.show()

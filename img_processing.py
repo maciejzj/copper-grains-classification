@@ -24,7 +24,7 @@ def crop_ui(img):
     '''Remove FLIR camera UI from image'''
     img_cropped  = crop(img, ((27, 19), (25, 37)))
     return img_cropped
-    
+
 def get_temperature_bounds(img, bounds=(((6, 24), (283, 318)),
                                        ((219, 236), (283, 318)))):
     '''Extract temperature values from FLIR UI on image.'''
@@ -50,51 +50,34 @@ def full_prepare(img):
     img_crop = crop_ui(img_gray)
     img_prep = invert(img_crop)
     return img_prep
-    
+
 def load_img_series(path):
     '''Load jpg images containing glob pattern in path and get them in array.'''
     imgs = glob.glob(path + '*.jpg')
     imgs = natsort.natsorted(imgs)
     return [imread(img) for img in imgs]
-    
+
 def default_img_set():
     '''
     Get default set of metal grains cooling down recorded with FLIR
     termovision camera.
     '''
-    samples_names = ['104_E5R', '113_E5R', '119_E5R',
+    samples_names = ('104_E5R', '113_E5R', '119_E5R',
                      '105_E11R','106_E11R', '115_E11R',
                      '107_E6R', '108_E6R', '117_E6R',
-                     '111_E16R', '112_E16R', '118_E16R']
+                     '111_E16R', '112_E16R', '118_E16R')
     
     X = [load_img_series('img/' + name) for name in samples_names]
     y = [0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3]
     return [X, y]
-    
+
 def decode_labels(y):
     '''Turn numeric labels into grain samples names.'''
     y_labels = np.array(['E5R', 'E6R', 'E11R', 'E16R'])
     return y_labels[y]
-    
+
 def encode_labels(y_labels):
     '''Turn grain samples names into numeric labels.'''
     y = {'E5R':0, 'E6R':1, 'E11R':2, 'E16R':3}
     return [y[label] for label in y_labels]
-    
-def setup_matplotlib_params():
-    '''Setup matplotlib to use Latex rendering style.'''
-    pass
-#    pgf_with_custom_preamble = {
-#         "font.family": "serif",
-#         "text.usetex": True,
-#         "legend.frameon": False,
-#         "pgf.rcfonts": False,
-#         "pgf.preamble": [
-#            r"\usepackage{units}",
-#            r"\usepackage{metalogo}",
-#            r"\usepackage{unicode-math}",
-#            r"\setmathfont{xits-math.otf}",
-#            ]
-#    }
-#    mpl.rcParams.update(pgf_with_custom_preamble)
 

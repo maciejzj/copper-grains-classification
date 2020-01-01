@@ -32,7 +32,7 @@ def network_cross_validation(model, X, y, n_splits):
 def mean_confusion_matrix(model, X, y, n_splits):
     '''Compute mean confusion matrix using cross validation with n splits.'''
     conf_matrix = np.zeros((4, 4))
-
+    a
     folds = StratifiedKFold(n_splits = n_splits).split(X, y)
     for train_index, test_index in folds:
         x_train, x_test= X[train_index], X[test_index]
@@ -40,7 +40,7 @@ def mean_confusion_matrix(model, X, y, n_splits):
         
         model.fit(x_train, y_train, epochs=300, verbose=0)
         y_pred = model.predict_classes(x_test)
-
+        
         for test, pred in zip(y_test, y_pred):
             conf_matrix[test][pred] = conf_matrix[test][pred] + 1
     

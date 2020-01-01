@@ -20,7 +20,7 @@ def inside_circle(x, y, a, b, r):
     with center of (a, b) and radius r.
     '''
     return (x - a) * (x - a) + (y - b) * (y - b) < r * r
-    
+
 def find_remaining_blobs(new_blobs, old_blobs):
     '''
     Return list of blobs present in both lists, where blob is considered same
@@ -34,7 +34,7 @@ def find_remaining_blobs(new_blobs, old_blobs):
             if inside_circle(xn, yn, xo, yo, 2 * ro):
                 remaining.append(new_blob)
     return unique(remaining)
-    
+
 def unique(multilist):
     '''Get list without repeating values.'''
     return list(set(tuple(i) for i in multilist))
@@ -65,14 +65,13 @@ def count_blobs_with_all_methods(X):
     # Option two: all
     Xa = [[len(stage) for stage in find_blob_series(img_series, 
                                                     only_remaining = False)]
-           for img_series in X]    
+           for img_series in X]
     # Option one: remaining
     Xr = [[len(stage) for stage in find_blob_series(img_series)]
                  for img_series in X]
     # Option three: remaining ratio
     Xp = [ratio_of_remaining_blobs_in_stages(find_blob_series(img_series))
                 for img_series in X]
-                
     return Xa, Xr, Xp
 
 if __name__ == "__main__":
@@ -82,12 +81,12 @@ if __name__ == "__main__":
     imgs_prep = [full_prepare(img) for img in imgs]
     # Prepare cropped images for displaying
     imgs_crop = [crop_ui(rgb2gray(img)) for img in imgs]
-
+    
     # Find blobs for stages of cooling with preserving only remainig ones
     stages_rem = find_blob_series(imgs_prep)
     
     # Map stages on first image
-    colors = ['blue', 'blueviolet', 'magenta', 'crimson', 'red']
+    colors = ('blue', 'blueviolet', 'magenta', 'crimson', 'red')
     fig, ax = plt.subplots(1)
     plt.title("Blobs detection with DoH")
     plt.imshow(imgs_crop[0], cmap=plt.get_cmap('gray'))
@@ -96,14 +95,14 @@ if __name__ == "__main__":
             y, x, r = blob
             c = plt.Circle((x, y), r, color=color, linewidth=0.75, fill=False)
             ax.add_patch(c)
-    labels = ['Minute 0', 'Minute 1', 'Minute 2', 'Minute 3', 'Minute 4']
+    labels = ('Minute 0', 'Minute 1', 'Minute 2', 'Minute 3', 'Minute 4')
     patch_plot_legend_outside(colors, labels)
     print(ratio_of_remaining_blobs_in_stages(stages_rem))
-
+    
     # Show stages on subplots
     fig, ax = plt.subplots(2, 3, figsize=(12, 7))
     ax = ax.flatten()
-
+    
     loop_set = enumerate(zip(stages_rem, colors, imgs_crop))
     for idx, (stage, color, img) in loop_set:
         ax[idx].imshow(img, cmap=plt.get_cmap('gray'))
@@ -113,14 +112,14 @@ if __name__ == "__main__":
             c = plt.Circle((x, y), r, color=color, linewidth=0.75, fill=False)
             ax[idx].add_patch(c)
     plt.tight_layout()
-
+    
     # Find all blobs for every stage of cooling
     stages_all = find_blob_series(imgs_prep, only_remaining=False)
-
+    
     # Show stages on subplots
     fig, ax = plt.subplots(2, 3, figsize=(12, 7))
     ax = ax.flatten()
-
+    
     loop_set = enumerate(zip(stages_all, colors, imgs_crop))
     for idx, (stage, color, img) in loop_set:
         ax[idx].imshow(img, cmap=plt.get_cmap('gray'))
@@ -136,7 +135,7 @@ if __name__ == "__main__":
     # Show stages on subplots
     fig, ax = plt.subplots(2, 3, figsize=(10, 7))
     ax = ax.flatten()
-
+    
     # Show stages on subplots
     loop_set = enumerate(zip(stages_rem, stages_all, imgs_crop))
     for idx, (stage_rem, stage_all, img) in loop_set:

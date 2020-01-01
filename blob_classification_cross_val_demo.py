@@ -7,14 +7,14 @@ from neural_network import *
 def cross_val_demo(X, y):
     X = np.array(X)
     y = np.array(y)
-
+    
     model = default_grain_classifier_model()
     model.compile(optimizer='adam',
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])
     
     score = network_cross_validation(model, X, y, 3)
-
+    
     print('Folds scores: (loss, acc)\n', score)
     score = np.array(score)
     print('Cross validation mean score (loss, acc):\n',

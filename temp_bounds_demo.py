@@ -30,7 +30,8 @@ for bound in bounds:
     plt.imshow(img_txt, cmap="gray")
     plt.savefig('temp_bounds_bin.png', dpi=300, transparent=True, 
                 bbox_inches='tight')
-    
+
 print(get_temperature_bounds(img))
 
 plt.show()
+
