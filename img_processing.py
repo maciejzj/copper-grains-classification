@@ -1,6 +1,7 @@
+'''Prepare thermal images for classification, data loading.'''
+
 import glob
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
 import natsort
 import numpy as np
@@ -16,7 +17,7 @@ from skimage.util import invert, crop
 
 def show_with_hist(img, title):
     '''Plot imgage alongside its histogram.'''
-    fig = plt.figure()
+    plt.figure()
     plt.subplot(121)
     plt.imshow(img, cmap=plt.get_cmap('gray'))
     plt.title(title)
@@ -43,7 +44,7 @@ def get_temperature_bounds(img, bounds=(((6, 24), (283, 318)),
         img_txt = bound_img > thr
         img_txt = Image.fromarray(img_txt)
         temp = pytesseract.image_to_string(img_txt, config='digits')
-        if temp is not '':
+        if temp != '':
             temp = float(temp) / 10
         else:
             temp = 0
@@ -94,4 +95,3 @@ def encode_labels(y_labels):
     '''Turn grain samples names into numeric labels.'''
     y = {'E5R': 0, 'E6R': 1, 'E11R': 2, 'E16R': 3}
     return [y[label] for label in y_labels]
-

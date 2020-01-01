@@ -1,3 +1,5 @@
+'''Model and validation for grain classifier using blob detection.'''
+
 import numpy as np
 from sklearn.model_selection import StratifiedKFold
 import tensorflow as tf
@@ -51,4 +53,3 @@ def mean_confusion_matrix(model, X, y, n_splits):
             conf_matrix[test][pred] = conf_matrix[test][pred] + 1
 
     return conf_matrix / n_splits
-

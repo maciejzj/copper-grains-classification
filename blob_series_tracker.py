@@ -1,16 +1,17 @@
-from math import sqrt
+'''Track and count number of blobs in thermal images of grains.'''
 
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-import numpy as np
 from skimage.color import rgb2gray
-from skimage.feature import blob_dog
 
 from img_processing import crop_ui, full_prepare, load_img_series
 from blob_finder import find_blobs
 
 
 def patch_plot_legend_outside(colors, labels):
+    '''
+    Make given plots share their legend entry and place legend upper right.
+    '''
     legend = [mpatches.Patch(color=color, label=label)
               for color, label in zip(colors, labels)]
     plt.legend(handles=legend, loc='upper right', bbox_to_anchor=(1, 1))
@@ -31,7 +32,7 @@ def find_remaining_blobs(new_blobs, old_blobs):
     '''
     remaining = []
     for new_blob in new_blobs:
-        yn, xn, rn = new_blob
+        yn, xn, _ = new_blob
         for old_blob in old_blobs:
             yo, xo, ro = old_blob
             if inside_circle(xn, yn, xo, yo, 2 * ro):
@@ -69,17 +70,21 @@ def ratio_of_remaining_blobs_in_stages(stages):
 
 
 def count_blobs_with_all_methods(X):
+    '''
+    Get number of blobs in all images in X data set
+    using three ways of counting.
+    '''
     # Option two: all
     Xa = [[
         len(stage)
         for stage in find_blob_series(img_series, only_remaining=False)
     ] for img_series in X]
-    
+
     # Option one: remaining
     Xr = [[
-            len(stage) for stage in find_blob_series(img_series)
+        len(stage) for stage in find_blob_series(img_series)
     ] for img_series in X]
-    
+
     # Option three: remaining ratio
     Xp = [
         ratio_of_remaining_blobs_in_stages(find_blob_series(img_series))
@@ -87,7 +92,9 @@ def count_blobs_with_all_methods(X):
     ]
     return Xa, Xr, Xp
 
-if __name__ == "__main__":
+
+def main():
+    '''Demo blob tracking with various ways of counting blobs.'''
     # Load images
     imgs = load_img_series('img/104_E5R')
     # Prepare images for processing
@@ -100,7 +107,7 @@ if __name__ == "__main__":
 
     # Map stages on first image
     colors = ('blue', 'blueviolet', 'magenta', 'crimson', 'red')
-    fig, ax = plt.subplots(1)
+    _, ax = plt.subplots(1)
     plt.title("Blobs detection with DoH")
     plt.imshow(imgs_crop[0], cmap=plt.get_cmap('gray'))
     for stage, color in zip(stages_rem, colors):
@@ -113,7 +120,7 @@ if __name__ == "__main__":
     print(ratio_of_remaining_blobs_in_stages(stages_rem))
 
     # Show stages on subplots
-    fig, ax = plt.subplots(2, 3, figsize=(12, 7))
+    _, ax = plt.subplots(2, 3, figsize=(12, 7))
     ax = ax.flatten()
 
     for idx, (stage, img) in enumerate(zip(stages_rem, imgs_crop)):
@@ -130,7 +137,7 @@ if __name__ == "__main__":
     stages_all = find_blob_series(imgs_prep, only_remaining=False)
 
     # Show stages on subplots
-    fig, ax = plt.subplots(2, 3, figsize=(12, 7))
+    _, ax = plt.subplots(2, 3, figsize=(12, 7))
     ax = ax.flatten()
 
     for idx, (stage, img) in enumerate(zip(stages_all, imgs_crop)):
@@ -144,7 +151,7 @@ if __name__ == "__main__":
     plt.tight_layout()
 
     # Show two methods combined to compare
-    fig, ax = plt.subplots(2, 3, figsize=(10, 7))
+    _, ax = plt.subplots(2, 3, figsize=(10, 7))
     ax = ax.flatten()
 
     # Show stages on subplots
@@ -166,3 +173,6 @@ if __name__ == "__main__":
 
     plt.show()
 
+
+if __name__ == "__main__":
+    main()

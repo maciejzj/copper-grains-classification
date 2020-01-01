@@ -1,17 +1,20 @@
+'''Demo and compare three ways of detecting blobs in images.'''
+
 from math import sqrt
 
-import matplotlib
 import matplotlib.pyplot as plt
-from skimage import data
 from skimage.color import rgb2gray
 from skimage.feature import blob_dog, blob_log, blob_doh
 from skimage.io import imread
-from skimage.util import invert, crop
 
 from img_processing import crop_ui, full_prepare
 
 
 def compare_detection(img):
+    '''
+    Detect blobs in thermal images of grains using three methods
+    and numbers of blobs.
+    '''
     blobs_log = blob_log(img, max_sigma=2, num_sigma=10, threshold=.125)
     blobs_log[:, 2] = blobs_log[:, 2] * sqrt(2)
 
@@ -23,12 +26,11 @@ def compare_detection(img):
 
     return [blobs_log, blobs_dog, blobs_doh]
 
-
-if __name__ == "__main__":
-    img = imread('img/104_E5R_0.jpg')
-    img_crop = crop_ui(rgb2gray(img))
-    img_prep = full_prepare(img)
-    blobs_list = compare_detection(img_prep)
+def main():
+    sample_img = imread('img/104_E5R_0.jpg')
+    img_crop = crop_ui(rgb2gray(sample_img))
+    img_prep = full_prepare(sample_img)
+    blob_list = compare_detection(img_prep)
 
     colors = ('r', 'g', 'b', 'c')
     titles = ('Laplacian of Gaussian', 'Difference of Gaussian',
@@ -36,7 +38,7 @@ if __name__ == "__main__":
 
     fig, axes = plt.subplots(1, 3, figsize=(13, 4))
     ax = axes.ravel()
-    loop_set = zip(blobs_list, colors, titles)
+    loop_set = zip(blob_list, colors, titles)
     for idx, (blobs, color, title) in enumerate(loop_set):
         ax[idx].set_title('{}, number of blobs: {}'.format(title, len(blobs)))
         ax[idx].imshow(img_crop, cmap=plt.get_cmap('gray'))
@@ -48,3 +50,5 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.show()
 
+if __name__ == "__main__":
+    main()

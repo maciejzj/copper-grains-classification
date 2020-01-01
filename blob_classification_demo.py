@@ -1,8 +1,8 @@
+'''Demo of grain classifcation using blob detection.'''
+
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
-import tensorflow as tf
-from tensorflow import keras
 
 from img_processing import decode_labels, default_img_set, full_prepare
 from blob_series_tracker import count_blobs_with_all_methods
@@ -10,6 +10,10 @@ from neural_network import default_grain_classifier_model
 
 
 def classification_demo(X, y):
+    '''
+    Demo grain classification on given data.
+    Train and test default model.
+    '''
     X = np.array(X)
     y = np.array(y)
 
@@ -33,7 +37,7 @@ def classification_demo(X, y):
     print('Model evaluation loss and accuracy:\n',
           model.evaluate(X_test, y_test, verbose=0), '\n')
 
-    fig = plt.figure()
+    plt.figure()
     ax = plt.subplot()
     plt.title('Model training history')
     plt.xlabel('Epoch')
@@ -48,19 +52,21 @@ def classification_demo(X, y):
     labs = [l.get_label() for l in lns]
     ax.legend(lns, labs, loc='lower right', bbox_to_anchor=(1, 0.5))
 
-
-if __name__ == '__main__':
+def main():
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]
 
     Xs = count_blobs_with_all_methods(X)
 
-    demo_names = ('All blobs detection',
+    DEMO_NAMES = ('All blobs detection',
                   'Detect only remaining blobs',
                   'Percentage of remaining blobs')
-    for X, demo_name in zip(Xs, demo_names):
+    for X, demo_name in zip(Xs, DEMO_NAMES):
         print(demo_name)
         classification_demo(X, y)
 
     plt.show()
+  
 
+if __name__ == '__main__':
+    main()

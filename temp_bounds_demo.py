@@ -1,8 +1,11 @@
 import matplotlib.pyplot as plt
-import numpy as np
+from skimage.color import rgb2gray
+from skimage.filters import threshold_otsu
 from skimage.io import imread
+from skimage.transform import rescale
+from skimage.util import invert
 
-from img_processing import *
+from img_processing import get_temperature_bounds
 
 
 img = imread('img/103_E5R_1.jpg')
@@ -32,4 +35,3 @@ for bound in bounds:
 print(get_temperature_bounds(img))
 
 plt.show()
-

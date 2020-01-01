@@ -1,22 +1,21 @@
+'''Generate images, plots and tables for bachelor's thesis paper.'''
+
 import csv
-from math import sqrt
 import os
 
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import numpy as np
-from skimage import data
 from skimage.color import rgb2gray
-from skimage.feature import blob_dog, blob_doh, blob_log
+from skimage.filters import threshold_otsu
 from skimage.io import imread, imsave
-from skimage.util import invert, crop, img_as_ubyte
+from skimage.transform import rescale
+from skimage.util import invert, img_as_ubyte
 import tikzplotlib
 from sklearn.model_selection import train_test_split
 from tensorflow import keras
 
 from blob_analysis import (count_blobs_with_all_methods, patch_plot_legend,
                            plot_blob_stat)
-from blob_classification_demo import classification_demo
 from blob_detection_compare_demo import compare_detection
 from blob_series_tracker import (find_blob_series,
                                  ratio_of_remaining_blobs_in_stages)
@@ -24,6 +23,30 @@ from img_processing import (crop_ui, default_img_set, full_prepare,
                             load_img_series)
 from neural_network import (default_grain_classifier_model,
                             network_cross_validation, mean_confusion_matrix)
+
+
+def temp_bounds_gen():
+    img = imread('img/103_E5R_1.jpg')
+    img = rgb2gray(img)
+    img = invert(img)
+
+    bounds = (((6, 24), (283, 318)),
+              ((219, 236), (283, 318)))
+
+    for bound in bounds:
+        bound_img = img[slice(*bound[0]), slice(*bound[1])]
+        bound_img = rescale(bound_img, 4, anti_aliasing=True)
+        thr = threshold_otsu(bound_img)
+        img_txt = bound_img > thr
+
+        plt.figure()
+        plt.imshow(bound_img, cmap="gray")
+        plt.axis('off')
+        imsave('exports/temp_bounds_scale.png', img_as_ubyte(bound_img))
+        plt.figure()
+        plt.axis('off')
+        plt.imshow(img_txt, cmap="gray")
+        imsave('exports/temp_bounds_bin.png', img_as_ubyte(img_txt))
 
 
 def grain_samples_gen():
@@ -42,12 +65,10 @@ def blob_detection_compare_gen():
     img_prep = full_prepare(img)
     blobs_list = compare_detection(img_prep)
 
-    titles = ('Laplasjan funkcji Gaussa', 'Różniaca funkcji Gaussa',
-              'Wyznacznik Hesjanu')
     suffixes = ('LoG', 'DoG', 'DoH')
 
-    for blobs, title, suffix in zip(blobs_list, titles, suffixes):
-        fig, ax = plt.subplots()
+    for blobs, suffix in zip(blobs_list, suffixes):
+        _, ax = plt.subplots()
         plt.title('Liczba wykrytych detali: {}'.format(len(blobs)))
         plt.imshow(img_crop, cmap=plt.get_cmap('gray'))
         for blob in blobs:
@@ -141,7 +162,7 @@ def neural_network_trainig_gen():
         X = np.array(X)
         y = np.array(y)
 
-        X_train, X_test, y_train, y_test = train_test_split(
+        X_train, _, y_train, _ = train_test_split(
             X, y, stratify=y, test_size=0.33, random_state=1)
 
         model = default_grain_classifier_model()
@@ -279,19 +300,19 @@ def confusion_matrix_gen():
         delimiter=";")
 
 
-def clear_exports_dir():
-    for root, dirs, files in os.walk(exports_dir):
-        for file in files:
-            os.remove(os.path.join(root, file))
+def clear_dir(dir_to_clear):
+    for root, _, files in os.walk(dir_to_clear):
+        for file_to_rm in files:
+            os.remove(os.path.join(root, file_to_rm))
 
 
 if __name__ == '__main__':
-    exports_dir = 'exports'
-    if not os.path.exists(exports_dir):
-        os.makedirs(exports_dir)
+    if not os.path.exists('exports'):
+        os.makedirs('exports')
     else:
-        clear_exports_dir()
+        clear_dir('exports')
 
+    temp_bounds_gen()
     grain_samples_gen()
     blob_detection_compare_gen()
     blob_count_gen()

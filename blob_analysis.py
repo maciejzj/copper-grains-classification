@@ -1,4 +1,5 @@
-import numpy as np
+'''Plot and analyze data extracted from thermal images of grains.'''
+
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
@@ -7,6 +8,7 @@ from blob_series_tracker import count_blobs_with_all_methods
 
 
 def plot_blob_stat(samples_set, lebels_set, colors):
+    '''Plot blob count versus minutes.'''
     plt.figure()
     for sample_series, sample_label_index in zip(samples_set, lebels_set):
         plt.plot(
@@ -17,14 +19,15 @@ def plot_blob_stat(samples_set, lebels_set, colors):
 
 
 def patch_plot_legend(colors, labels):
+    '''Make given plots share their legend entry.'''
     legend = [
         mpatches.Patch(color=color, label=label)
         for color, label in zip(colors, labels)
     ]
     plt.legend(handles=legend)
 
-
-if __name__ == '__main__':
+def main():
+    '''Plot number of detected blobs using three ways of counting.'''
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]
 
@@ -53,3 +56,6 @@ if __name__ == '__main__':
 
     plt.show()
 
+
+if __name__ == '__main__':
+    main()

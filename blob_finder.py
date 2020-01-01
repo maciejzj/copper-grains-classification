@@ -1,8 +1,8 @@
+'''Find blobs in thermal images of grains.'''
+
 from math import sqrt
 
-import matplotlib
 import matplotlib.pyplot as plt
-import numpy as np
 from skimage.color import rgb2gray
 from skimage.feature import blob_dog
 from skimage.io import imread
@@ -24,34 +24,33 @@ def find_blobs(img):
 
 if __name__ == "__main__":
     # Load and show
-    img = imread('img/104_E5R_0.jpg')
-    img = rgb2gray(img)
-    show_with_hist(img, 'Original image')
+    SAMPLE_IMG = imread('img/104_E5R_0.jpg')
+    SAMPLE_IMG = rgb2gray(SAMPLE_IMG)
+    show_with_hist(SAMPLE_IMG, 'Original image')
 
     # Get temperature bounds
-    print(get_temperature_bounds(img))
+    print(get_temperature_bounds(SAMPLE_IMG))
 
     # Crop
-    img_crop = crop_ui(img)
-    show_with_hist(img_crop, 'Cropped image')
+    IMG_CROP = crop_ui(SAMPLE_IMG)
+    show_with_hist(IMG_CROP, 'Cropped image')
 
     # Invert
-    img_inv = invert(img_crop)
-    show_with_hist(img_inv, 'Inverted')
+    IMG_INV = invert(IMG_CROP)
+    show_with_hist(IMG_INV, 'Inverted')
 
-    img_prep = img_inv
+    IMG_PREP = IMG_INV
 
-    blobs = find_blobs(img_prep)
+    BLOBS = find_blobs(IMG_PREP)
 
     fig, ax = plt.subplots(1)
     plt.title("Blobs detection with DoH")
-    plt.imshow(img_crop, cmap=plt.get_cmap('gray'))
-    for blob in blobs:
-            y, x, r = blob
-            c = plt.Circle((x, y), r, color='r', linewidth=0.75, fill=False)
-            ax.add_patch(c)
+    plt.imshow(IMG_CROP, cmap=plt.get_cmap('gray'))
+    for blob in BLOBS:
+        y, x, r = blob
+        c = plt.Circle((x, y), r, color='r', linewidth=0.75, fill=False)
+        ax.add_patch(c)
     ax.set_axis_off()
-    print(len(blobs))
+    print(len(BLOBS))
 
     plt.show()
-
