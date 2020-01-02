@@ -21,36 +21,38 @@ def find_blobs(img):
     blobs[:, 2] = blobs[:, 2] * sqrt(2)
     return blobs
 
-
-if __name__ == "__main__":
+def main():
+    '''Demo blob finding in grain image.'''
     # Load and show
-    SAMPLE_IMG = imread('img/104_E5R_0.jpg')
-    SAMPLE_IMG = rgb2gray(SAMPLE_IMG)
-    show_with_hist(SAMPLE_IMG, 'Original image')
+    img = imread('img/104_E5R_0.jpg')
+    img = rgb2gray(img)
+    show_with_hist(img, 'Original image')
 
     # Get temperature bounds
-    print(get_temperature_bounds(SAMPLE_IMG))
+    print(get_temperature_bounds(img))
 
     # Crop
-    IMG_CROP = crop_ui(SAMPLE_IMG)
-    show_with_hist(IMG_CROP, 'Cropped image')
+    img_crop = crop_ui(img)
+    show_with_hist(img_crop, 'Cropped image')
 
     # Invert
-    IMG_INV = invert(IMG_CROP)
-    show_with_hist(IMG_INV, 'Inverted')
+    img_inv = invert(img_crop)
+    show_with_hist(img_inv, 'Inverted')
 
-    IMG_PREP = IMG_INV
+    img_prep = img_inv
 
-    BLOBS = find_blobs(IMG_PREP)
+    blobs = find_blobs(img_prep)
 
-    fig, ax = plt.subplots(1)
-    plt.title("Blobs detection with DoH")
-    plt.imshow(IMG_CROP, cmap=plt.get_cmap('gray'))
-    for blob in BLOBS:
+    _, ax = plt.subplots(1)
+    plt.title("blobs detection with DoH")
+    plt.imshow(img_crop, cmap=plt.get_cmap('gray'))
+    for blob in blobs:
         y, x, r = blob
         c = plt.Circle((x, y), r, color='r', linewidth=0.75, fill=False)
         ax.add_patch(c)
     ax.set_axis_off()
-    print(len(BLOBS))
+    print(len(blobs))
 
-    plt.show()
+
+if __name__ == "__main__":
+    main()
