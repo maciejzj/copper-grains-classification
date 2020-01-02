@@ -25,7 +25,7 @@ from neural_network import (default_grain_classifier_model,
                             network_cross_validation, mean_confusion_matrix)
 
 
-def temp_bounds_gen():
+def temp_bounds_imgs_gen():
     img = imread('img/103_E5R_1.jpg')
     img = rgb2gray(img)
     img = invert(img)
@@ -49,7 +49,7 @@ def temp_bounds_gen():
         imsave('exports/temp_bounds_bin.png', img_as_ubyte(img_txt))
 
 
-def grain_samples_gen():
+def grain_samples_imgs_gen():
     samples_names = ('104_E5R', '117_E6R')
     for name in samples_names:
         imgs = load_img_series('img/' + name)
@@ -59,7 +59,7 @@ def grain_samples_gen():
                    img_as_ubyte(crop_ui(img)))
 
 
-def blob_detection_compare_gen():
+def blob_detection_compare_plots_gen():
     img = imread('img/104_E5R_0.jpg')
     img_crop = crop_ui(rgb2gray(img))
     img_prep = full_prepare(img)
@@ -80,7 +80,7 @@ def blob_detection_compare_gen():
         tikzplotlib.save('exports/blob_detection_compare_' + suffix)
 
 
-def blob_count_gen():
+def blob_count_plots_gen():
     imgs = load_img_series('img/104_E5R')
     imgs_prep = [full_prepare(img) for img in imgs]
     imgs_crop = [crop_ui(rgb2gray(img)) for img in imgs]
@@ -120,7 +120,24 @@ def blob_count_gen():
         plt.savefig('exports/blob_tracker_min_' + str(i))
 
 
-def blob_analysis_gen():
+def blob_ratio_table_gen():
+    sample_names = ('104_E5R', '106_E11R', '107_E6R', '111_E16R')
+
+    with open('exports/neural_network_comparison.csv', 'w') as csvfile:
+        filewriter = csv.writer(csvfile, delimiter=';')
+        # Header
+        filewriter.writerow(('Próbka', 'Minuta 0', 'Minuta 1', 'Minuta 2',
+                             'Minuta 3', 'Minuta 4'))
+        for name in sample_names:
+            imgs = load_img_series('img/' + name)
+            imgs_prep = [full_prepare(img) for img in imgs]
+            stages_rem = find_blob_series(imgs_prep)
+            ratios = ratio_of_remaining_blobs_in_stages(stages_rem)
+            ratios = (round(ratio, 2) for ratio in ratios)
+            filewriter.writerow((name, *ratios))
+
+
+def blob_analysis_plots_gen():
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]
 
@@ -151,7 +168,7 @@ def blob_analysis_gen():
     tikzplotlib.save('exports/blob_analysis_ratio')
 
 
-def neural_network_trainig_gen():
+def neural_network_trainig_plots_gen():
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]
     Xs = count_blobs_with_all_methods(X)
@@ -184,7 +201,69 @@ def neural_network_trainig_gen():
         tikzplotlib.save('exports/neural_network_trainig_' + suffix)
 
 
-def network_comparison_gen():
+def neural_network_test_table_gen():
+    X, y = default_img_set()
+    X = [[full_prepare(img) for img in same_sample] for same_sample in X]
+    Xs = count_blobs_with_all_methods(X)
+    Xs = [np.array(X_count) for X_count in Xs]
+    y = np.array(y)
+
+    row_names = ('Wszystkie detale', 'Śledzone detale',
+                 'Stosunek śledzonych detali')
+
+    with open('exports/neural_network_test.csv', 'w') as csvfile:
+        filewriter = csv.writer(csvfile, delimiter=';')
+        # Header
+        filewriter.writerow(('Metoda zliczania detali', 'Wskaźnik', 
+                             'wskaźnik'))
+        filewriter.writerow(('Metoda zliczania detali', 'Błąd', 'Dokładność'))
+
+        for X, name in zip(Xs, row_names):
+            X = np.array(X)
+            X_train, X_test, y_train, y_test = train_test_split(
+                X, y, stratify=y, test_size=0.33, random_state=1)
+
+            model = default_grain_classifier_model()
+            model.compile(
+                optimizer='adam',
+                loss='sparse_categorical_crossentropy',
+                metrics=['accuracy'])
+            model.fit(X_train, y_train, epochs=300, verbose=0)
+
+            score = model.evaluate(X_test, y_test, verbose=0)
+            filewriter.writerow((name, *score))
+
+
+def neural_network_validation_table_gen():
+    X, y = default_img_set()
+    X = [[full_prepare(img) for img in same_sample] for same_sample in X]
+    Xs = count_blobs_with_all_methods(X)
+    Xs = [np.array(X_count) for X_count in Xs]
+    y = np.array(y)
+
+    row_names = ('Wszystkie detale', 'Śledzone detale',
+                 'Stosunek śledzonych detali')
+
+    with open('exports/neural_network_validation.csv', 'w') as csvfile:
+        filewriter = csv.writer(csvfile, delimiter=';')
+        # Header
+        filewriter.writerow(('Metoda zliczania detali', 'Wskaźnik', 
+                     'wskaźnik'))
+        filewriter.writerow(('Metoda zliczania detali', 'Błąd', 'Dokładność'))
+
+        for X, name in zip(Xs, row_names):
+            model = default_grain_classifier_model()
+            model.compile(
+                optimizer='adam',
+                loss='sparse_categorical_crossentropy',
+                metrics=['accuracy'])
+
+            scores = np.array(network_cross_validation(model, X, y, 3))
+            score = np.round(scores.mean(axis=0), 2)
+            filewriter.writerow((name, *score))
+
+
+def network_comparison_table_gen():
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]
     X = [
@@ -213,8 +292,8 @@ def network_comparison_gen():
                 optimizer='adam',
                 loss='sparse_categorical_crossentropy',
                 metrics=['accuracy'])
-            score = np.array(network_cross_validation(model, X, y, 3))
-            score = np.round(score.mean(axis=0), 2)
+            scores = np.array(network_cross_validation(model, X, y, 3))
+            score = np.round(scores.mean(axis=0), 2)
 
             filewriter.writerow(('Funkcja aktywacji', func, *score))
 
@@ -239,8 +318,8 @@ def network_comparison_gen():
                 optimizer='adam',
                 loss='sparse_categorical_crossentropy',
                 metrics=['accuracy'])
-            score = np.array(network_cross_validation(model, X, y, 3))
-            score = np.round(score.mean(axis=0), 2)
+            scores = np.array(network_cross_validation(model, X, y, 3))
+            score = np.round(scores.mean(axis=0), 2)
 
             filewriter.writerow(('Liczba warstw ukrytych', i, *score))
 
@@ -259,8 +338,8 @@ def network_comparison_gen():
                 optimizer='adam',
                 loss='sparse_categorical_crossentropy',
                 metrics=['accuracy'])
-            score = np.array(network_cross_validation(model, X, y, 3))
-            score = np.round(score.mean(axis=0), 2)
+            scores = np.array(network_cross_validation(model, X, y, 3))
+            score = np.round(scores.mean(axis=0), 2)
 
             filewriter.writerow(('Liczba neuronów w warstwach ukrytych',
                                  '{} i {}'.format(num[0], num[1]), *score))
@@ -270,16 +349,16 @@ def network_comparison_gen():
         optimizers = ('sgd', 'adam')
         for opt in optimizers:
             model.compile(
-                optimizer='adam',
+                optimizer=opt,
                 loss='sparse_categorical_crossentropy',
                 metrics=['accuracy'])
-            score = np.array(network_cross_validation(model, X, y, 3))
-            score = np.round(score.mean(axis=0), 2)
+            scores = np.array(network_cross_validation(model, X, y, 3))
+            score = np.round(scores.mean(axis=0), 2)
 
             filewriter.writerow(('Algorytm uczenia', opt, *score))
 
 
-def confusion_matrix_gen():
+def confusion_matrix_table_gen():
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]
     X = count_blobs_with_all_methods(X)[2]
@@ -312,13 +391,16 @@ if __name__ == '__main__':
     else:
         clear_dir('exports')
 
-    temp_bounds_gen()
-    grain_samples_gen()
-    blob_detection_compare_gen()
-    blob_count_gen()
-    blob_analysis_gen()
-    neural_network_trainig_gen()
-    network_comparison_gen()
-    confusion_matrix_gen()
+    temp_bounds_imgs_gen()
+    grain_samples_imgs_gen()
+    blob_detection_compare_plots_gen()
+    blob_ratio_table_gen()
+    blob_count_plots_gen()
+    blob_analysis_plots_gen()
+    neural_network_test_table_gen()
+    neural_network_validation_table_gen()
+    neural_network_trainig_plots_gen()
+    network_comparison_table_gen()
+    confusion_matrix_table_gen()
 
     plt.show()

@@ -9,7 +9,7 @@ from neural_network import (default_grain_classifier_model,
 
 
 def cross_val_demo(X, y):
-    '''Demo cross validation of default grain classfier on given data.'''
+    '''Demo cross validation of default grain classifier on given data.'''
     X = np.array(X)
     y = np.array(y)
 
@@ -19,12 +19,12 @@ def cross_val_demo(X, y):
         loss='sparse_categorical_crossentropy',
         metrics=['accuracy'])
 
-    score = network_cross_validation(model, X, y, 3)
+    scores = network_cross_validation(model, X, y, 3)
 
-    print('Folds scores: (loss, acc)\n', score)
-    score = np.array(score)
+    print('Folds scores: (loss, acc)\n', scores)
+    scores = np.array(scores)
     print('Cross validation mean score (loss, acc):\n',
-          score.mean(axis=0), '\n')
+          scores.mean(axis=0), '\n')
 
 def main():
     '''Demo blob cross validation of grain classifcation.'''
