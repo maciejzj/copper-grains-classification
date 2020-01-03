@@ -9,7 +9,7 @@ thermal emissivity.
 Classification algorithm utilizes a neural network developed with Keras
 interface.
 
-Feel free to check out my [thesis](https://github.com/MaciejZj/Bachelor-thesis),
+Feel free to check out my [thesis](https://github.com/MaciejZj/Bachelors-thesis),
 which offers in-depth insight into the project and research.
 
  
