@@ -26,6 +26,7 @@ def cross_val_demo(X, y):
     print('Cross validation mean score (loss, acc):\n',
           scores.mean(axis=0), '\n')
 
+
 def main():
     '''Demo blob cross validation of grain classifcation.'''
     X, y = default_img_set()
@@ -40,6 +41,7 @@ def main():
     for X, demo_name in zip(Xs, demo_names):
         print(demo_name)
         cross_val_demo(X, y)
+
 
 if __name__ == '__main__':
     main()

@@ -52,6 +52,7 @@ def classification_demo(X, y):
     labs = [l.get_label() for l in lns]
     ax.legend(lns, labs, loc='lower right', bbox_to_anchor=(1, 0.5))
 
+
 def main():
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]

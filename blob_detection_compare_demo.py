@@ -26,6 +26,7 @@ def compare_detection(img):
 
     return [blobs_log, blobs_dog, blobs_doh]
 
+
 def main():
     sample_img = imread('img/104_E5R_0.jpg')
     img_crop = crop_ui(rgb2gray(sample_img))
@@ -49,6 +50,7 @@ def main():
 
     plt.tight_layout()
     plt.show()
+
 
 if __name__ == "__main__":
     main()

@@ -26,6 +26,7 @@ def patch_plot_legend(colors, labels):
     ]
     plt.legend(handles=legend)
 
+
 def main():
     '''Plot number of detected blobs using three ways of counting.'''
     X, y = default_img_set()

@@ -21,6 +21,7 @@ def find_blobs(img):
     blobs[:, 2] = blobs[:, 2] * sqrt(2)
     return blobs
 
+
 def main():
     '''Demo blob finding in grain image.'''
     # Load and show
