@@ -9,7 +9,7 @@ thermal emissivity.
 Classification algorithm utilizes a neural network developed with Keras
 interface.
 
-Feel free to check out my [thesis](https://github.com/MaciejZj/Bachelors-thesis),
-which offers in-depth insight into the project and research.
+Feel free to check out my [thesis](https://github.com/MaciejZj/Bachelors-thesis)
+(written in Polish), which offers in-depth insight into the project and research.
 
 ![grains_demo](https://github.com/MaciejZj/Copper-grains-classification/blob/master/img/demo.gif?raw=true)
