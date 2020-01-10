@@ -1,4 +1,4 @@
-'''Demo of grain classifcation using blob detection.'''
+'''Demo of grains classifcation using blob detection.'''
 
 import numpy as np
 import matplotlib.pyplot as plt
