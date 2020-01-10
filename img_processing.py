@@ -1,4 +1,4 @@
-'''Prepare thermal images for classification, data loading.'''
+'''Supporting functions for image preprocessng, data loading and labeling.'''
 
 import glob
 

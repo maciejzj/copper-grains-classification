@@ -54,6 +54,7 @@ def classification_demo(X, y):
 
 
 def main():
+    '''Demo grains classification.'''
     X, y = default_img_set()
     X = [[full_prepare(img) for img in same_sample] for same_sample in X]
 

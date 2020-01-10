@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module img_processing</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>img_processing</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/Users/maciej/Documents/Uczelnia/Praca%20inz%CC%87ynierska/Copper-grains-classification/img_processing.py">/Users/maciej/Documents/Uczelnia/Praca inżynierska/Copper-grains-classification/img_processing.py</a></font></td></tr></table>
+    <p><tt>Supporting&nbsp;functions&nbsp;for&nbsp;image&nbsp;preprocessng,&nbsp;data&nbsp;loading&nbsp;and&nbsp;labeling.</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="PIL.Image.html">PIL.Image</a><br>
+<a href="glob.html">glob</a><br>
+</td><td width="25%" valign=top><a href="natsort.html">natsort</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+<a href="pytesseract.html">pytesseract</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-crop_ui"><strong>crop_ui</strong></a>(img)</dt><dd><tt>Remove&nbsp;FLIR&nbsp;camera&nbsp;UI&nbsp;from&nbsp;image</tt></dd></dl>
+ <dl><dt><a name="-decode_labels"><strong>decode_labels</strong></a>(y)</dt><dd><tt>Turn&nbsp;numeric&nbsp;labels&nbsp;into&nbsp;grain&nbsp;samples&nbsp;names.</tt></dd></dl>
+ <dl><dt><a name="-default_img_set"><strong>default_img_set</strong></a>()</dt><dd><tt>Get&nbsp;default&nbsp;set&nbsp;of&nbsp;metal&nbsp;grains&nbsp;cooling&nbsp;down&nbsp;recorded&nbsp;with&nbsp;FLIR<br>
+thermovision&nbsp;camera.</tt></dd></dl>
+ <dl><dt><a name="-encode_labels"><strong>encode_labels</strong></a>(y_labels)</dt><dd><tt>Turn&nbsp;grain&nbsp;samples&nbsp;names&nbsp;into&nbsp;numeric&nbsp;labels.</tt></dd></dl>
+ <dl><dt><a name="-full_prepare"><strong>full_prepare</strong></a>(img)</dt><dd><tt>Pipeline&nbsp;for&nbsp;FLIR&nbsp;images,&nbsp;convert&nbsp;to&nbsp;grayscale,&nbsp;crop&nbsp;ui&nbsp;and&nbsp;invert.</tt></dd></dl>
+ <dl><dt><a name="-get_temperature_bounds"><strong>get_temperature_bounds</strong></a>(img, bounds=(((6, 24), (283, 318)), ((219, 236), (283, 318))))</dt><dd><tt>Extract&nbsp;temperature&nbsp;values&nbsp;from&nbsp;FLIR&nbsp;UI&nbsp;on&nbsp;image.</tt></dd></dl>
+ <dl><dt><a name="-load_img_series"><strong>load_img_series</strong></a>(path)</dt><dd><tt>Load&nbsp;jpg&nbsp;images&nbsp;containing&nbsp;glob&nbsp;pattern&nbsp;in&nbsp;path&nbsp;and&nbsp;get&nbsp;them&nbsp;in&nbsp;array.</tt></dd></dl>
+ <dl><dt><a name="-show_with_hist"><strong>show_with_hist</strong></a>(img, title)</dt><dd><tt>Plot&nbsp;imgage&nbsp;alongside&nbsp;its&nbsp;histogram.</tt></dd></dl>
+</td></tr></table>
+</body></html>
