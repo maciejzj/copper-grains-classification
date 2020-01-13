@@ -60,10 +60,10 @@ def main():
 
     Xs = count_blobs_with_all_methods(X)
 
-    DEMO_NAMES = ('All blobs detection',
+    demo_names = ('All blobs detection',
                   'Detect only remaining blobs',
                   'Percentage of remaining blobs')
-    for X, demo_name in zip(Xs, DEMO_NAMES):
+    for X, demo_name in zip(Xs, demo_names):
         print(demo_name)
         classification_demo(X, y)
 
