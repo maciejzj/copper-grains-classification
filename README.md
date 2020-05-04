@@ -9,6 +9,9 @@ thermal emissivity.
 Classification algorithm utilizes a neural network developed with Keras
 interface.
 
+The neural network is a proof of concept construct, to provide
+practical rationale for presented method of classifying grains.
+
 Feel free to check out my [thesis](https://github.com/MaciejZj/Bachelors-thesis)
 (written in Polish), which offers in-depth insight into the project and research.
 
