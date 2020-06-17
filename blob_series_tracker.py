@@ -74,13 +74,13 @@ def count_blobs_with_all_methods(X):
     Get number of blobs in all images in X data set
     using three ways of counting.
     '''
-    # Option two: all
+    # Option one: all
     Xa = [[
         len(stage)
         for stage in find_blob_series(img_series, only_remaining=False)
     ] for img_series in X]
 
-    # Option one: remaining
+    # Option two: remaining
     Xr = [[
         len(stage) for stage in find_blob_series(img_series)
     ] for img_series in X]
